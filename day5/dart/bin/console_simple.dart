@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:io';
+import 'package:equatable/equatable.dart';
 
 void main(List<String> arguments) {
   print("Day 5: Hydrothermal Venture");
@@ -30,7 +31,7 @@ void main(List<String> arguments) {
   print("Input:");
   print(inputString);
 
-  var points = <String, int>{};
+  var points = HashMap<Point, int>();
   //var points = {};
   print("Loop all input lines");
   inputString.split('\n').forEach((inputLine) {
@@ -42,14 +43,14 @@ void main(List<String> arguments) {
         locationBlocks[1].split(",").map((x) => int.parse(x.trim())).toList();
 
     var currentLocation = startLocations;
+
     while (true) {
       var p = Point(currentLocation[0], currentLocation[1]);
 
-      var key = '${p.x} ${p.y}';      
-      if (points.containsKey((key) )) {
-        points[key] = points[key] !+ 1;
+      if (points.containsKey((p))) {
+        points[p] = points[p]! + 1;
       } else {
-        points[key] = 1;
+        points[p] = 1;
       }
 
       if (currentLocation[0] == endLocations[0] &&
@@ -69,23 +70,17 @@ void main(List<String> arguments) {
       }
     }
   });
-  
+
   points.removeWhere((key, value) => value == 1);
   var count = points.length;
-  print("Total $count. overlapping locations");
-
+  print("Total $count overlapping locations");
 }
 
-class Point {
+class Point extends Equatable {
   final int x;
   final int y;
   const Point(this.x, this.y);
 
-  bool operator ==(other) {
-    if (other is! Point) return false;
-    Point key = other;
-    return (key.x == x 
-        && key.y == y 
-        );
-  }
+  @override
+  List<Object> get props => [x, y];
 }
