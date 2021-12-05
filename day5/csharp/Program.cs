@@ -15,9 +15,9 @@ var inputString = string.Empty;
 if (args.Length > 0){
     var filePath =args[0];
 
-if (File.Exists(filePath)){
-    inputString = File.ReadAllText(filePath);
-}
+    if (File.Exists(filePath)){
+        inputString = File.ReadAllText(filePath);
+    }
 }else{
     
     Console.WriteLine("Using example input");
